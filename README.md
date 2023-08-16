@@ -4,9 +4,9 @@ This project deals with sales data of a restaurant called Danny's Diner. It is t
 
 
 The files are as follows:
-1) DB Mindmap.jpg is a mindmap of tables and columns in the database created in MindMaster software.
+1) Entity relationship diagram.jpg is a mindmap of tables and columns in the database created in MindMaster software.
 
-2) Database Creation.sql is the code for creating database schema and inserting values.
+2) Dannys Dinner Database.sql is the code for creating database schema and inserting values.
 
 3) Dannys Diner Solutions.sql contains questions regarding sales of restaurant and SQL queries to answer them.
 
