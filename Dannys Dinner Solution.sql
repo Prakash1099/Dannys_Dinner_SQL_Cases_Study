@@ -1,64 +1,6 @@
-USE sql_challenges;
-/*
+--
 
-CREATE TABLE sales (
-  "customer_id" VARCHAR(1),
-  "order_date" DATE,
-  "product_id" INTEGER
-);
-
-INSERT INTO sales
-  ("customer_id", "order_date", "product_id")
-VALUES
-  ('A', '2021-01-01', '1'),
-  ('A', '2021-01-01', '2'),
-  ('A', '2021-01-07', '2'),
-  ('A', '2021-01-10', '3'),
-  ('A', '2021-01-11', '3'),
-  ('A', '2021-01-11', '3'),
-  ('B', '2021-01-01', '2'),
-  ('B', '2021-01-02', '2'),
-  ('B', '2021-01-04', '1'),
-  ('B', '2021-01-11', '1'),
-  ('B', '2021-01-16', '3'),
-  ('B', '2021-02-01', '3'),
-  ('C', '2021-01-01', '3'),
-  ('C', '2021-01-01', '3'),
-  ('C', '2021-01-07', '3');
- 
-
-CREATE TABLE menu (
-  "product_id" INTEGER,
-  "product_name" VARCHAR(5),
-  "price" INTEGER
-);
-
-INSERT INTO menu
-  ("product_id", "product_name", "price")
-VALUES
-  ('1', 'sushi', '10'),
-  ('2', 'curry', '15'),
-  ('3', 'ramen', '12');
-  
-
-CREATE TABLE members (
-  "customer_id" VARCHAR(1),
-  "join_date" DATE
-);
-
-INSERT INTO members
-  ("customer_id", "join_date")
-VALUES
-  ('A', '2021-01-07'),
-  ('B', '2021-01-09');
-
-*/
-
-
---SELECT * FROM sql_challenges..members;
---SELECT * FROM sql_challenges..menu;
---SELECT * FROM sql_challenges..sales;
-
+--------------------------------------------------------------------------------------------
 
 -- 1. What is the total amount each customer spent at the restaurant?
 -- 2. How many days has each customer visited the restaurant?
@@ -73,7 +15,7 @@ VALUES
 --     they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
 
 --------------------------------------------------------------------------------------------
-
+USE sql_challenges;
 --1. What is the total amount each customer spent at the restaurant?
 
 SELECT s.customer_id
@@ -87,9 +29,9 @@ GROUP BY s.customer_id;
 Result:
 ____________________________
 |customer_id | total_amount |
-|	A		 |	76			|
-|	B		 |	74			|
-|	C		 |	36			|
+|	A    	 |	76			|
+|	B   	 |	74			|
+|	C    	 |	36	   		|
 -----------------------------
 */
 
@@ -103,7 +45,7 @@ FROM
 	 FROM sales) sales
 GROUP BY customer_id;
 
-/* Answer
+/* Result
 _____________________________________
 | customer_id  |  no_of_days_visited |
 |			A  |	4				 |
@@ -116,7 +58,7 @@ _____________________________________
 
 --3. What was the first item from the menu purchased by each customer?
 
-with first_item(customer_id, product_name, order_date, rnk) as(
+WITH first_item(customer_id, product_name, order_date, rnk) as(
 SELECT DISTINCT s.customer_id
 	,  m.product_name
 	,  s.order_date
@@ -133,13 +75,13 @@ WHERE rnk = 1
 GROUP BY customer_id
 
 
-/* ANSWER
+/* Result
 _________________________
-customer_id |  product_id|
-		A	| sushi,curry|
-		B	|	curry	 |
-		C	|	ramen	 |
-____________|____________|
+|customer_id |  product_id|
+|		A	| sushi,curry|
+|		B	|	curry	 |
+|		C	|	ramen	 |
+|___________|____________|
 
 */
 
@@ -183,13 +125,13 @@ WHERE rnk = 1
 GROUP BY customer_id;
 
 
-/* ANSWER
+/* Result
 _______________________________
-customer_id	 |	product_name   |
-	A		 |		ramen	   |
-	B		 |curry,ramen,sushi|
-	C		 |		ramen	   |
-_____________|_________________|  
+|customer_id |	product_name   |
+|	A		 |		ramen	   |
+|	B		 |curry,ramen,sushi|
+|	C		 |		ramen	   |
+|____________|_________________|  
 */
 
 
@@ -216,12 +158,12 @@ WHERE rnk = 1
 GROUP BY customer_id;
 
 
-/*ANSWER  NOTE: customer C is not a member 
+/*Result  NOTE: customer C is not a member 
 ____________________________
-customer_id |  product_name|
-	A		|	curry	   |
-	B		|	sushi	   |
-____________|______________|
+|customer_id | product_name|
+|	A		|	curry	   |
+|	B		|	sushi	   |
+|___________|______________|
 */
 
 
@@ -247,12 +189,12 @@ WHERE rnk = 1
 GROUP BY customer_id;
 
 
-/*
-------------|---------------|
-customer_id | product_name	|
- A			|  sushi,curry	|
- B			|	sushi		|
- -----------|---------------|
+/*Result
+|---------------------------|
+|customer_id| product_name	|
+|	A		|  sushi,curry	|
+|	B		|	sushi		|
+|-----------|---------------|
 */
 
 
@@ -270,10 +212,12 @@ JOIN members mem
 GROUP BY s.customer_id;
 
 
-/*
-customer_id | total_items |total_amount |
-	A		|	2		  |	25			|
-	B		|	3		  |	40			|
+/* Result
+_________________________________________
+|customer_id | total_items |total_amount|
+|	A		|	2		  |	25			|
+|	B		|	3		  |	40			|
+-----------------------------------------
 */
 
 -- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
@@ -288,14 +232,13 @@ ON s.product_id = m.product_id
 GROUP BY s.customer_id
 
 
-/*
-ANSWER
+/* Result
 _____________________
-customer_id | points |
-	A		|  860	 |
-	B		|  940	 |
-	C		|  360	 |
----------------------|
+|customer_id| points |
+|	A		|  860	 |
+|	B		|  940	 |
+|	C		|  360	 |
+|--------------------|
 */
 
 -- 10. In the first week after a customer joins the program (including their join date) 
@@ -314,12 +257,12 @@ WHERE DATEPART(month,s.order_date) = 1
 GROUP BY s.customer_id
 
 
-/* ANSWER
+/* Result
 _____________________
-customer_id | points |
-	A		|	1270 |
-	B		|	720  |
-----------------------
+|customer_id| points |
+|	A		|	1270 |
+|	B		|	720  |
+|---------------------
 */
 
 
